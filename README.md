@@ -133,12 +133,13 @@ cd C:\path\to\project
 C:\path\to\astra\.venv\Scripts\astra.exe
 ```
 
-Или одной командой на Windows — `start.bat` создаёт venv, ставит зависимости,
-прогоняет тесты и запускает Astra:
+Или одной командой на Windows — `start.bat` создаёт venv, ставит зависимости
+и запускает Astra. Тесты **не** запускаются автоматически: они нужны для правки
+багов и вызываются отдельным режимом.
 
 ```powershell
 .\start.bat
-.\start.bat test      # только тесты
+.\start.bat test      # тесты по требованию
 .\start.bat demo      # офлайн-демо
 .\start.bat doctor    # диагностика
 .\start.bat build     # wheel + sdist в .\dist
@@ -386,7 +387,7 @@ astra/
 ├── .codex/              пример prompt и skill
 ├── docs/demo.png|svg    скриншот демо
 ├── scripts/make_demo.py генератор скриншота
-├── start.bat            venv + deps + tests + demo/build/run
+├── start.bat            venv + deps + run/build/demo/doctor; tests on demand
 └── tests/               71 тест
 ```
 
@@ -395,6 +396,9 @@ astra/
 ```bash
 .venv\Scripts\python.exe -m pytest -q
 # 71 passed
+
+# или на Windows:
+start.bat test
 ```
 
 Покрыто: TOML-конфиг и приоритет ключей, free-only фильтр и ранжирование моделей,
@@ -402,8 +406,8 @@ fallback-роутер, путь/CRLF/approval в инструментах, SKILL
 SSE-парсинг (контент, tool calls, usage, 401/429), сессии, полный цикл агента на mock,
 рендер REPL и one-shot CLI.
 
-> На машине сборки не было API-ключей, поэтому реальные вызовы провайдеров не выполнялись.
-> Проверка сети: `astra auth test openrouter` и `astra doctor --network` после добавления ключа.
+> Прямых API-ключей на машине сборки не было; live-проверка выполнялась через локальный
+> OmniRoute/Kiro. Проверка сети: `astra auth test <provider>` и `astra doctor --network`.
 
 ## Ограничения
 
