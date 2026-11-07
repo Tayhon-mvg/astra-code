@@ -136,6 +136,74 @@ def test_readonly_blocks_writes(cfg: Config):
     assert not (cfg.cwd / "a.txt").exists()
 
 
+def test_auto_commands_skip_prompt(cfg: Config):
+    cfg.data["approval"] = "ask"
+    cfg.data["auto_commands"] = True
+
+    async def fail(tool: str, summary: str, detail: str) -> str:
+        raise AssertionError("approval must not be requested for a safe command")
+
+    reg = registry(cfg, fail)
+    out = run(reg, "run_command", {"command": "echo auto-ok"})
+    assert out.startswith("OK")
+    assert "auto-ok" in out
+
+
+def test_dangerous_command_still_asks(cfg: Config):
+    cfg.data["approval"] = "ask"
+    cfg.data["auto_commands"] = True
+    calls: list[str] = []
+
+    async def deny(tool: str, summary: str, detail: str) -> str:
+        calls.append(summary)
+        return "deny"
+
+    reg = registry(cfg, deny)
+    out = run(reg, "run_command", {"command": "git reset --hard"})
+    assert out.startswith("ERROR")
+    assert calls and "git reset --hard" in calls[0]
+
+
+def test_ask_commands_flag_disables_auto(cfg: Config):
+    cfg.data["approval"] = "ask"
+    cfg.data["auto_commands"] = False
+
+    async def deny(tool: str, summary: str, detail: str) -> str:
+        return "deny"
+
+    reg = registry(cfg, deny)
+    out = run(reg, "run_command", {"command": "echo blocked"})
+    assert out.startswith("ERROR")
+    assert "отклонил" in out
+
+
+def test_readonly_blocks_commands(cfg: Config):
+    cfg.data["approval"] = "readonly"
+    cfg.data["auto_commands"] = True
+    reg = registry(cfg)
+    out = run(reg, "run_command", {"command": "echo nope"})
+    assert out.startswith("ERROR")
+    assert "readonly" in out
+
+
+def test_web_search_tool(cfg: Config, monkeypatch):
+    from astra.search import SearchResult
+
+    async def fake_search(query: str, max_results: int = 5):
+        assert query == "example"
+        return [
+            SearchResult("Example", "https://example.com", "Snippet", "bing"),
+            SearchResult("Second", "https://example.org", "Other", "bing"),
+        ]
+
+    monkeypatch.setattr("astra.tools.search_web", fake_search)
+    reg = registry(cfg)
+    out = run(reg, "web_search", {"query": "example", "max_results": 2})
+    assert "https://example.com" in out
+    assert "https://example.org" in out
+    assert "Snippet" in out
+
+
 def test_run_command(cfg: Config):
     reg = registry(cfg)
     out = run(reg, "run_command", {"command": "echo astra-ok"})

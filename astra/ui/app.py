@@ -797,6 +797,7 @@ class AstraApp:
                 ("расширения", f"скиллов {len(self.skills)} · агентов {len(self.agents)} · команд {len(self.commands)}"),
                 ("память", ", ".join(m.title for m in memory) or "нет"),
                 ("approval", str(self.cfg.get("approval", "ask"))),
+                ("команды", "авто (опасные — с подтверждением)" if self.cfg.get("auto_commands", True) else "спрашивать"),
                 ("тема", self.theme),
             ],
             title="status",

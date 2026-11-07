@@ -22,15 +22,23 @@ the model asks to read. Free tiers may train on prompts; check the provider poli
 The agent is **not** a security boundary:
 
 - `--yes` / `approval = "auto"` approves every tool call, including shell commands.
-- An approved shell command runs with your user privileges. Secrets are stripped
-  from its environment, but it can still read files your user can read.
-- `read_file`, `write_file`, `edit_file` and `run_command` are approval-gated by
-  default. `.env`, `auth.toml`, private keys and credential files require an extra
-  confirmation; their output is redacted.
+- `write_file` and `edit_file` are approval-gated by default. `run_command` runs ordinary
+  commands without a prompt (`auto_commands = true`); destructive patterns (root deletions,
+  disk format, `git reset --hard`, force-push, shutdown, publish, pipe-to-shell) still ask.
+  `--ask-commands` restores a prompt before every command; `--read-only` blocks all.
+- An approved shell command runs with your user privileges. Secrets are stripped from its
+  environment, but it can still read files your user can read.
+- `web_search` (Bing RSS / DuckDuckGo / optional Brave) sends the query to those providers;
+  their results and `fetch_url` page text are untrusted data and must not be executed as
+  instructions. Treat snippets as leads, not facts.
+- `.env`, `auth.toml`, private keys and credential files require an extra confirmation;
+  their output is redacted.
 - `~/.astra/auth.toml` and `~/.omniroute/storage.sqlite` are blocked from the file
   tools. They are still ordinary user files on disk; rely on OS permissions.
 - `fetch_url` blocks loopback/private/link-local addresses and validates redirects,
   but DNS rebinding and provider-side SSRF are outside its control.
+- `web_search` has no API key by default (Bing RSS, DuckDuckGo); optional Brave uses
+  `BRAVE_SEARCH_API_KEY`. Search providers receive the query and may log it.
 - Prompt injection is real: file contents, web pages and tool output are treated
   as untrusted data by the system prompt, but a model can still be tricked. Review
   commands and diffs before approving them.

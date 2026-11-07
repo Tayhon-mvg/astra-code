@@ -6,7 +6,7 @@
 
 **Бесплатный терминальный coding-агент. Claude Code-подобный цикл, только на free-tier.**
 
-`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **74 теста** · [github.com/Tayhon-mvg/astra-code](https://github.com/Tayhon-mvg/astra-code)
+`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **82 теста** · [github.com/Tayhon-mvg/astra-code](https://github.com/Tayhon-mvg/astra-code)
 
 </div>
 
@@ -212,6 +212,8 @@ model = "qwen/qwen3.8-27b"
 - **Aurora-тема**: фиолетово-циановый градиент, звёздный логотип, аккуратные рамки.
 - **Живой статус**: одна строка `✻ Astra пишет · N симв.` вместо многострочного Live —
   так вывод не размножается в Windows Terminal и при скролле.
+- **Web search без ключей**: Bing RSS + DuckDuckGo, опционально Brave; `fetch_url` для
+  полного текста страницы.
 - **Финальный Markdown** с подсветкой кода, заголовками и таблицами.
 - **Карточки инструментов**: `⚙ read_file`, `✎ write_file`, `▸ run_command`, diff-статистика
   `+12 −3`, время выполнения и честный `✗` при ошибке.
@@ -284,11 +286,12 @@ astra "перечисли доступные скиллы и загрузи ре
 | `write_file` | создать/перезаписать файл | да |
 | `edit_file` | точная замена фрагмента, CRLF-safe | да |
 | `list_dir` / `glob` / `grep` | дерево, поиск файлов и regex по содержимому | нет |
-| `run_command` | PowerShell (Windows) / bash (Unix), timeout | да |
+| `run_command` | PowerShell (Windows) / bash (Unix), timeout | обычные — авто; опасные — да |
 | `todo_write` | план задач | нет |
 | `task` | субагент с ограниченным набором инструментов | наследует |
 | `skill` | загрузка инструкций скилла | нет |
 | `fetch_url` | публичный http(s), HTML → текст | нет |
+| `web_search` | Bing RSS + DuckDuckGo, опционально Brave | нет |
 
 - **Free-only guard.** OpenRouter-модель без `:free`, платный Gemini или Z.ai блокируются
   до запроса. Отключить защиту: `allow_paid = true` в конфиге.
@@ -296,7 +299,13 @@ astra "перечисли доступные скиллы и загрузи ре
   отдельного подтверждения. `~/.astra/auth.toml` и база `~/.omniroute/storage.sqlite`
   агенту недоступны.
 - **Approval modes.** `ask` (по умолчанию), `auto` (`--yes`), `readonly` (`--read-only`).
-  Для каждой команды можно выбрать «всегда в этой сессии».
+  `approval` управляет правками файлов; shell-команды по умолчанию идут **без постоянных
+  запросов** (`auto_commands = true`). Опасные команды (`rm -rf /`, `Remove-Item -Recurse C:\`,
+  `git reset --hard`, `git push -f`, `shutdown`, `npm publish`, `curl | sh`) всё равно
+  спрашивают подтверждение. `--ask-commands` возвращает вопрос перед каждой командой.
+- **Web search.** `web_search` работает без ключа: Bing RSS, fallback DuckDuckGo,
+  опционально Brave API (`BRAVE_SEARCH_API_KEY`). `fetch_url` читает страницу целиком.
+  Результаты поиска и страницы — недоверенные данные, модель обязана цитировать URL.
 - **Секреты.** `.env`, `auth.toml`, `id_rsa`, `*.pem`, `credentials*` требуют отдельного
   подтверждения; их содержимое и вывод shell/`fetch_url` проходят через редакцию ключей
   (`sk-***`, `Bearer ***`, `API_KEY=***`). Дочерние процессы получают env **без**
@@ -327,8 +336,8 @@ astra init [--force]               создать ASTRA.md
 astra version
 ```
 
-Глобальные флаги: `--model`, `--provider`, `--cwd`, `--yes`, `--read-only`,
-`--continue`, `--resume [ID]`, `--theme`, `--no-color`, `--debug`.
+Глобальные флаги: `--model`, `--provider`, `--cwd`, `--yes`, `--ask-commands`,
+`--read-only`, `--continue`, `--resume [ID]`, `--theme`, `--no-color`, `--debug`.
 
 ## Слэш-команды
 
@@ -351,6 +360,7 @@ provider = "openrouter"
 model = "astra-coder"        # или astra-reasoner, groq:openai/gpt-oss-120b
 theme = "aurora"
 approval = "ask"             # ask | auto | readonly
+auto_commands = true         # обычные shell-команды без вопроса
 max_steps = 40
 max_tokens = 8192
 temperature = 0.2
@@ -386,7 +396,8 @@ astra/
 │   ├── providers.py     OpenAI-compatible SSE-клиент + mock
 │   ├── router.py        fallback-цепочки, кэш моделей, выбор модели
 │   ├── agent.py         tool-calling цикл, compaction, субагенты
-│   ├── tools.py         11 инструментов, approval, sandbox
+│   ├── tools.py         12 инструментов, approval, sandbox
+│   ├── search.py        Bing RSS + DuckDuckGo + Brave (optional)
 │   ├── skills.py        .claude/.codex SKILL.md
 │   ├── agents.py        .claude/agents, встроенные general/explore/reviewer
 │   ├── commands.py      .claude/commands, .codex/prompts
@@ -400,14 +411,14 @@ astra/
 ├── docs/demo.png|svg    скриншот демо
 ├── scripts/make_demo.py генератор скриншота
 ├── start.bat            venv + deps + run/build/demo/doctor; tests on demand
-└── tests/               74 теста
+└── tests/               82 теста
 ```
 
 ## Тесты
 
 ```bash
 .venv\Scripts\python.exe -m pytest -q
-# 74 passed
+# 82 passed
 
 # или на Windows:
 start.bat test

@@ -26,6 +26,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "theme": "aurora",
     "language": "ru",
     "approval": "ask",          # ask | auto | readonly
+    "auto_commands": True,      # run non-destructive shell commands without a prompt
     "max_steps": 40,
     "max_tokens": 8192,
     "temperature": 0.2,
@@ -46,6 +47,7 @@ model = "astra-coder"        # или "groq", "gemini", "openrouter:model:free"
 theme = "aurora"             # aurora | mono
 language = "ru"
 approval = "ask"             # ask | auto | readonly
+auto_commands = true         # не спрашивать для обычных shell-команд
 max_steps = 40
 max_tokens = 8192
 temperature = 0.2

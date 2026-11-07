@@ -62,6 +62,7 @@ def build_parser(*, subcommands: bool = True) -> argparse.ArgumentParser:
     parser.add_argument("--provider", help="провайдер по умолчанию")
     parser.add_argument("--cwd", help="рабочая папка проекта")
     parser.add_argument("--yes", action="store_true", help="авто-подтверждение изменений и команд")
+    parser.add_argument("--ask-commands", action="store_true", help="спрашивать перед каждой shell-командой")
     parser.add_argument("--read-only", action="store_true", help="запретить изменения и команды")
     parser.add_argument("--continue", dest="continue_", action="store_true", help="продолжить последнюю сессию")
     parser.add_argument("--resume", nargs="?", const="", default=None, help="продолжить сессию по id")
@@ -149,6 +150,8 @@ def _load_config(args: argparse.Namespace) -> tuple[Config, Path]:
         cfg.set("theme", args.theme)
     if getattr(args, "yes", False):
         cfg.set("approval", "auto")
+    if getattr(args, "ask_commands", False):
+        cfg.set("auto_commands", False)
     if getattr(args, "read_only", False):
         cfg.set("approval", "readonly")
     if getattr(args, "debug", False):
