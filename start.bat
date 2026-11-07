@@ -35,12 +35,7 @@ if not exist ".venv\Scripts\python.exe" (
     echo [1/3] Virtual environment: OK
 )
 
-set "VENV=%CD%\.venv\Scripts\python.exe"
-
-echo [2/3] Installing dependencies...
-"%VENV%" -m pip install --upgrade pip --disable-pip-version-check
-if errorlevel 1 goto fail
-"%VENV%" -m pip install -e ".[dev]" --disable-pip-version-check
+call .\install_deps.bat
 if errorlevel 1 goto fail
 
 if /I "%MODE%"=="test" (
@@ -56,6 +51,12 @@ if /I "%MODE%"=="build" (
     if errorlevel 1 goto fail
     echo.
     echo Build artifacts are in .\dist
+    goto done
+)
+
+if /I "%MODE%"=="media-setup" (
+    call .\install_media.bat
+    if errorlevel 1 goto fail
     goto done
 )
 
@@ -92,13 +93,14 @@ exit /b 0
 
 :usage
 echo.
-echo Usage: start.bat [run^|test^|demo^|doctor^|build^|help]
+echo Usage: start.bat [run^|test^|demo^|doctor^|build^|media-setup^|help]
 echo.
-echo   run     install dependencies and launch interactive Astra (default)
-echo   test    install dependencies and run pytest on demand
-echo   demo    install dependencies and run the offline demo
-echo   doctor  install dependencies and run diagnostics
-echo   build   install dependencies and build wheel + sdist into .\dist
+echo   run          install dependencies and launch interactive Astra (default)
+echo   test         install dependencies and run pytest on demand
+echo   demo         install dependencies and run the offline demo
+echo   doctor       install dependencies and run diagnostics
+echo   build        install dependencies and build wheel + sdist into .\dist
+echo   media-setup  install media dependencies (Pillow, opencv-python)
 echo.
 echo Tests are intentionally NOT run by run/demo/doctor/build.
 echo.
