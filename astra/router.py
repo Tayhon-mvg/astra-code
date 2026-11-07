@@ -223,6 +223,9 @@ class Router:
     def ranked_models(self, provider_id: str, purpose: str = "coder") -> list[dict[str, Any]]:
         models = self.all_models(provider_id)
         by_id = {m["id"]: m for m in models}
+        if provider_id == "deepseek":
+            order = {m.id: m.rank for m in catalog.PROVIDERS[provider_id].models}
+            return sorted(models, key=lambda m: (order.get(m["id"], 99), m["id"]))
         if provider_id == "omniroute":
             # Verified working models first; then the long tail (Kiro text first).
             presets = list(catalog.PROVIDERS[provider_id].models)
@@ -422,13 +425,20 @@ class Router:
             target.system_extra = model.system
             targets.append(target)
         if not targets:
+            wanted: list[str] = []
+            for entry in chain:
+                pid = str(entry).split(":", 1)[0]
+                if pid in catalog.PROVIDERS and pid not in wanted:
+                    wanted.append(pid)
+            hints = []
+            for pid in wanted[:4]:
+                suffix = " --from-omniroute" if pid == "omniroute" else ""
+                hints.append(f"  astra auth set {pid}{suffix}")
             raise SetupError(
-                f"{model.name}: нет ни одного доступного бесплатного провайдера.\n"
-                "Добавьте ключ (без карты):\n"
-                "  astra auth set openrouter   · 16+ free-моделей\n"
-                "  astra auth set gemini       · frontier-класс\n"
-                "  astra auth set groq         · самый быстрый\n"
-                "Или посмотрите демо без ключей: astra demo"
+                f"{model.name}: нет ни одного доступного провайдера.\n"
+                "Добавьте ключ:\n"
+                + ("\n".join(hints) if hints else "  astra auth set openrouter")
+                + "\nИли посмотрите демо без ключей: astra demo"
             )
         return targets[:6]
 

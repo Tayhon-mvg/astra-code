@@ -23,6 +23,7 @@ from .ui.theme import palette
 SETUP_ORDER = [
     "openrouter",
     "gemini",
+    "deepseek",
     "groq",
     "sambanova",
     "zai",

@@ -6,7 +6,7 @@
 
 **Бесплатный терминальный coding-агент. Claude Code-подобный цикл, только на free-tier.**
 
-`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **71 тест** · [github.com/Tayhon-mvg/astra-code](https://github.com/Tayhon-mvg/astra-code)
+`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **74 теста** · [github.com/Tayhon-mvg/astra-code](https://github.com/Tayhon-mvg/astra-code)
 
 </div>
 
@@ -40,6 +40,7 @@ Astra не продаёт токены и не проксирует трафик
 | **[OpenRouter](https://openrouter.ai/keys)** | `OPENROUTER_API_KEY` | ~16 моделей с суффиксом `:free` | 20 req/min, 50 req/день (1000 после разовой покупки 10 кредитов); карта и телефон не нужны |
 | **[OmniRoute](https://github.com/diegosouzapw/OmniRoute)** (локально) | `OMNIROUTE_API_KEY` | 500+ моделей из 11 free-провайдеров + combo; 5 проверенных Kiro | Нужен запущенный `omniroute serve`; ключ импортируется из `~/.omniroute` |
 | **[Google Gemini](https://aistudio.google.com/apikey)** | `GEMINI_API_KEY` | Gemini 2.5 Pro / Flash / Flash-Lite, 1M контекст | Лимиты видны в AI Studio; free-tier промпты могут использоваться Google для обучения |
+| **[DeepSeek](https://platform.deepseek.com/api_keys)** | `DEEPSEEK_API_KEY` | V4.1 Flash (`deepseek-flash`) и V4 Pro (`deepseek-v4-pro`), 1M контекст | 5M trial-токенов на аккаунт, затем платно |
 | **[Groq](https://console.groq.com/keys)** | `GROQ_API_KEY` | GPT-OSS 120B, Qwen 3.8 27B | ~30 req/min, 1000 req/день, 200k токенов/день; нужна верификация телефона |
 | **[SambaNova](https://cloud.sambanova.ai/keys)** | `SAMBANOVA_API_KEY` | DeepSeek V3.1/V3.2, GPT-OSS 120B, Llama 3.3 70B | ~20 req/min, 20 req/день, 200k токенов/день; free tier действует, пока к аккаунту не привязана карта |
 | **[Z.ai](https://z.ai/manage-apikey/apikey-list)** | `ZAI_API_KEY` | GLM-4.7-Flash, GLM-4.5-Flash, GLM-4.6V-Flash | Официально $0 бессрочно |
@@ -164,17 +165,28 @@ astra doctor            # python, git, ключи, папки, расширен�
 astra doctor --network  # дополнительно пингует /models каждого провайдера
 ```
 
-## Две собственные модели Astra
+## Четыре собственные модели Astra
 
-Astra Coder и Astra Reasoner — это **собственные композитные модели-профили**, а не обученные
-с нуля веса (обучить frontier-модель в рамках такого проекта невозможно). Каждая состоит из
-трёх частей: свой системный промпт, своя температура и free-only цепочка провайдеров с
-автоматическим fallback при `429`/`5xx`.
+Astra Coder и Astra Reasoner — **собственные композитные free-only профили** с fallback-цепочкой.
+DeepSeek V4.1 Flash и DeepSeek V4 — **собственные профили поверх официального DeepSeek API**
+(один провайдер, свои системные промпты). Это не обученные с нуля веса: обучить frontier-модель
+в рамках такого проекта невозможно; «своя модель» здесь — маршрутизация + промпт + температура.
 
-| Модель | Для чего | Цепочка (первая доступная) |
+| Модель | Для чего | Маршрут |
 |---|---|---|
 | **⚡ Astra Coder** | код, рефакторинг, тесты, минимальные диффы | Groq GPT-OSS 120B → OpenRouter code models → Gemini 2.5 Pro → SambaNova → Z.ai → Cloudflare → … |
 | **✧ Astra Reasoner** | архитектура, дебаг, plan-then-act | Gemini 2.5 Pro → SambaNova DeepSeek → OpenRouter reasoning → Groq → Z.ai → … |
+| **◈ DeepSeek V4.1 Flash** | быстрый агентный код, 1M контекст | `deepseek:deepseek-flash` |
+| **◇ DeepSeek V4** | reasoning, архитектура, V4 Pro | `deepseek:deepseek-v4-pro` |
+
+DeepSeek-профили требуют `DEEPSEEK_API_KEY` и используют **5M trial-токенов**; после них
+официальный API платный. Astra честно помечает их как trial, а не как вечно бесплатные.
+Переключение: `/model deepseek-v4.1-flash` или `astra --model deepseek-v4`.
+
+Проверка 2026-11-07: бесплатные маршруты OmniRoute к этим моделям (`cfp/deepseek-v4-*`,
+`dva/deepseek-v4-*`) не заработали — Cloudflare Playground зависает даже с установленным
+Chromium, Devin bridge не настроен. Поэтому рабочий путь для V4.1 Flash/V4 Pro — официальный
+DeepSeek API; Astra не выдаёт их за безусловно бесплатные.
 
 ```text
 $ astra
@@ -370,7 +382,7 @@ astra/
 ├── astra/
 │   ├── cli.py           argparse, подкоманды, one-shot/REPL
 │   ├── config.py        config.toml + auth.toml, TOML-сериализатор
-│   ├── catalog.py       12 провайдеров, free-only правила, 2 модели Astra
+│   ├── catalog.py       13 провайдеров, free-only правила, 4 модели Astra
 │   ├── providers.py     OpenAI-compatible SSE-клиент + mock
 │   ├── router.py        fallback-цепочки, кэш моделей, выбор модели
 │   ├── agent.py         tool-calling цикл, compaction, субагенты
@@ -388,14 +400,14 @@ astra/
 ├── docs/demo.png|svg    скриншот демо
 ├── scripts/make_demo.py генератор скриншота
 ├── start.bat            venv + deps + run/build/demo/doctor; tests on demand
-└── tests/               71 тест
+└── tests/               74 теста
 ```
 
 ## Тесты
 
 ```bash
 .venv\Scripts\python.exe -m pytest -q
-# 71 passed
+# 74 passed
 
 # или на Windows:
 start.bat test

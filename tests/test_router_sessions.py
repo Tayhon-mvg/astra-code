@@ -91,6 +91,25 @@ def test_omniroute_prefers_verified_models(cfg: Config):
     assert router.choose_model("omniroute", "reasoner") == "kiro/deepseek-3.2"
 
 
+def test_deepseek_composites(cfg: Config):
+    cfg.env["DEEPSEEK_API_KEY"] = "test"
+    router = Router(cfg)
+    flash = router.resolve("deepseek-v4.1-flash")[0]
+    assert flash.provider.id == "deepseek"
+    assert flash.model == "deepseek-flash"
+    assert flash.custom is not None
+    pro = router.resolve("deepseek-v4")[0]
+    assert pro.provider.id == "deepseek"
+    assert pro.model == "deepseek-v4-pro"
+
+
+def test_deepseek_requires_key(cfg: Config):
+    router = Router(cfg)
+    with pytest.raises(Exception) as exc:
+        router.resolve("deepseek-v4")
+    assert "astra auth set deepseek" in str(exc.value)
+
+
 def test_omniroute_requires_key(cfg: Config):
     router = Router(cfg)
     with pytest.raises(Exception) as exc:

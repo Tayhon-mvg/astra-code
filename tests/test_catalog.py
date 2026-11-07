@@ -62,11 +62,28 @@ def test_account_id_required(cfg):
     assert "abc" in catalog.resolve_base_url(provider, cfg)
 
 
-def test_custom_models_are_two():
-    assert list(catalog.COMPOSITE_MODELS) == ["astra-coder", "astra-reasoner"]
+def test_custom_models():
+    assert list(catalog.COMPOSITE_MODELS) == [
+        "astra-coder",
+        "astra-reasoner",
+        "deepseek-v4.1-flash",
+        "deepseek-v4",
+    ]
     for model in catalog.COMPOSITE_MODELS.values():
         assert model.system
-        assert len(model.chain) >= 5
+        assert len(model.chain) >= 1
+
+
+def test_deepseek_provider(cfg):
+    provider = catalog.PROVIDERS["deepseek"]
+    assert provider.base_url == "https://api.deepseek.com/v1"
+    assert provider.env_key == "DEEPSEEK_API_KEY"
+    cfg.env["DEEPSEEK_API_KEY"] = "test"
+    assert catalog.provider_available(provider, cfg) is True
+    assert catalog.is_free_model("deepseek", "deepseek-flash") is True
+    ok, reason = catalog.free_status("deepseek", "deepseek-v4-pro")
+    assert ok is True
+    assert "trial" in reason
 
 
 def test_omniroute_catalog(cfg):

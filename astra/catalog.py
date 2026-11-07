@@ -70,8 +70,9 @@ GEMINI_MODELS = (
 
 SAMBANOVA_MODELS = (
     ModelInfo("DeepSeek-V3.1", "DeepSeek V3.1", 131_072, 1, "сильный код"),
-    ModelInfo("gpt-oss-120b", "GPT-OSS 120B", 131_072, 2, "быстрый флагман"),
-    ModelInfo("Meta-Llama-3.3-70B-Instruct", "Llama 3.3 70B", 131_072, 3, "универсал"),
+    ModelInfo("deepseek-v3.1-flash", "DeepSeek V3.1 Flash", 131_072, 2, "быстрый и дешёвый"),
+    ModelInfo("gpt-oss-120b", "GPT-OSS 120B", 131_072, 3, "быстрый флагман"),
+    ModelInfo("Meta-Llama-3.3-70B-Instruct", "Llama 3.3 70B", 131_072, 4, "универсал"),
 )
 
 ZAI_MODELS = (
@@ -100,6 +101,23 @@ OMNIROUTE_MODELS = (
     ModelInfo("auto/coding:free", "OmniRoute Coding Free", 400_000, 21, "агрегатор; сейчас нестабилен"),
 )
 
+DEEPSEEK_MODELS = (
+    ModelInfo(
+        "deepseek-flash",
+        "DeepSeek V4.1 Flash",
+        1_048_576,
+        1,
+        "официальный ID · 5M trial-кредитов",
+    ),
+    ModelInfo(
+        "deepseek-v4-pro",
+        "DeepSeek V4 Pro",
+        1_048_576,
+        2,
+        "официальный ID · 5M trial-кредитов",
+    ),
+)
+
 PROVIDERS: dict[str, Provider] = {
     "openrouter": Provider(
         id="openrouter",
@@ -123,6 +141,20 @@ PROVIDERS: dict[str, Provider] = {
         free_note="Gemini 2.5 Pro / Flash / Flash-Lite бесплатно, лимиты видны в AI Studio",
         models=GEMINI_MODELS,
         note="Единственный frontier-класс с настоящим бесплатным tier. Промпты free-tier могут использоваться Google для улучшения продуктов.",
+    ),
+    "deepseek": Provider(
+        id="deepseek",
+        name="DeepSeek (официальный API)",
+        base_url="https://api.deepseek.com/v1",
+        env_key="DEEPSEEK_API_KEY",
+        signup_url="https://platform.deepseek.com/api_keys",
+        docs_url="https://api-docs.deepseek.com/",
+        free_note="5M trial-кредитов на аккаунт; дальше платно · V4.1 Flash и V4 Pro, 1M контекст",
+        models=DEEPSEEK_MODELS,
+        note=(
+            "V4.1 Flash = deepseek-flash (бывший deepseek-v4-flash), "
+            "V4 Pro = deepseek-v4-pro. Trial-кредиты одноразовые: после них API платный."
+        ),
     ),
     "groq": Provider(
         id="groq",
@@ -263,6 +295,7 @@ PROVIDER_ORDER = [
     "groq",
     "openrouter",
     "gemini",
+    "deepseek",
     "sambanova",
     "zai",
     "cloudflare",
@@ -304,6 +337,20 @@ REASONER_SYSTEM = (
     "Use tools when evidence is needed; never fabricate file contents or command results."
 )
 
+DEEPSEEK_FLASH_SYSTEM = (
+    "You are DeepSeek V4.1 Flash inside Astra Code. You are the fast agentic coding profile: "
+    "read before editing, keep diffs minimal, use tools decisively, and verify with a relevant "
+    "command. Prefer one focused change over a broad rewrite. Never invent file contents or "
+    "command output. If a task is ambiguous, state the smallest reasonable assumption and proceed."
+)
+
+DEEPSEEK_PRO_SYSTEM = (
+    "You are DeepSeek V4 Pro inside Astra Code, the deep reasoning profile. "
+    "Think through architecture and failure modes before acting, then execute a short plan with "
+    "tools. Prefer root-cause fixes over symptoms, preserve existing behavior, and run the most "
+    "relevant verification. Finish with what changed, why, and the exact evidence you observed."
+)
+
 COMPOSITE_MODELS: dict[str, CompositeModel] = {
     "astra-coder": CompositeModel(
         id="astra-coder",
@@ -334,6 +381,36 @@ COMPOSITE_MODELS: dict[str, CompositeModel] = {
         temperature=0.25,
         purpose="reasoner",
         icon="✧",
+    ),
+    "deepseek-v4.1-flash": CompositeModel(
+        id="deepseek-v4.1-flash",
+        name="DeepSeek V4.1 Flash",
+        tagline="быстрый агентный код · 1M контекст",
+        description=(
+            "Собственный профиль Astra поверх официального DeepSeek V4.1 Flash "
+            "(`deepseek-flash`). Один вызов, без цепочки fallback. Требует DEEPSEEK_API_KEY; "
+            "на аккаунте есть 5M trial-кредитов, после них API платный."
+        ),
+        chain=("deepseek:deepseek-flash",),
+        system=DEEPSEEK_FLASH_SYSTEM,
+        temperature=0.2,
+        purpose="coder",
+        icon="◈",
+    ),
+    "deepseek-v4": CompositeModel(
+        id="deepseek-v4",
+        name="DeepSeek V4",
+        tagline="reasoning / V4 Pro · 1M контекст",
+        description=(
+            "Собственный профиль Astra поверх официального DeepSeek V4 Pro "
+            "(`deepseek-v4-pro`). План, архитектура, дебаг. Требует DEEPSEEK_API_KEY; "
+            "5M trial-кредитов, после них API платный."
+        ),
+        chain=("deepseek:deepseek-v4-pro",),
+        system=DEEPSEEK_PRO_SYSTEM,
+        temperature=0.3,
+        purpose="reasoner",
+        icon="◇",
     ),
 }
 
@@ -405,6 +482,10 @@ def is_free_model(provider_id: str, model_id: str) -> bool:
         )
     if provider_id == "zai":
         return "flash" in model_id.lower()
+    if provider_id == "deepseek":
+        # Official V4 models: 5M one-time trial credits, then paid. Treated as
+        # usable free-trial models, with an explicit warning in free_status.
+        return model_id in {"deepseek-flash", "deepseek-v4-pro", "deepseek-v4-flash"}
     if provider_id in {"ollama", "lmstudio", "custom", "mock", "omniroute"}:
         return True
     # Providers whose free tier applies account-wide (no card on file).
@@ -412,6 +493,8 @@ def is_free_model(provider_id: str, model_id: str) -> bool:
 
 
 def free_status(provider_id: str, model_id: str) -> tuple[bool, str]:
+    if provider_id == "deepseek":
+        return True, "5M trial-кредитов, затем платно"
     if is_free_model(provider_id, model_id):
         return True, "бесплатно"
     if provider_id == "openrouter":
@@ -555,6 +638,14 @@ SIGNUP_STEPS: dict[str, tuple[str, list[str]]] = {
             "Откройте Google AI Studio и войдите в Google-аккаунт.",
             "Get API key → Create API key (карта не нужна).",
             "Скопируйте ключ AIza… и вставьте сюда.",
+        ],
+    ),
+    "deepseek": (
+        "https://platform.deepseek.com/api_keys",
+        [
+            "Создайте аккаунт DeepSeek Platform.",
+            "API Keys → Create new API key.",
+            "На аккаунте 5M trial-токенов; после них V4.1 Flash/V4 Pro платные.",
         ],
     ),
     "groq": (
