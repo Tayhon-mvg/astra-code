@@ -1,0 +1,231 @@
+<svg class="rich-terminal" viewBox="0 0 1190 1026.0" xmlns="http://www.w3.org/2000/svg">
+    <!-- Generated with Rich https://www.textualize.io -->
+    <style>
+
+    @font-face {
+        font-family: "Fira Code";
+        src: local("FiraCode-Regular"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Regular.woff2") format("woff2"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Regular.woff") format("woff");
+        font-style: normal;
+        font-weight: 400;
+    }
+    @font-face {
+        font-family: "Fira Code";
+        src: local("FiraCode-Bold"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff2/FiraCode-Bold.woff2") format("woff2"),
+                url("https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/woff/FiraCode-Bold.woff") format("woff");
+        font-style: bold;
+        font-weight: 700;
+    }
+
+    .terminal-1816477181-matrix {
+        font-family: Fira Code, monospace;
+        font-size: 20px;
+        line-height: 24.4px;
+        font-variant-east-asian: full-width;
+    }
+
+    .terminal-1816477181-title {
+        font-size: 18px;
+        font-weight: bold;
+        font-family: arial;
+    }
+
+    .terminal-1816477181-r1 { fill: #c5c8c6 }
+.terminal-1816477181-r2 { fill: #a78bfa;font-weight: bold }
+.terminal-1816477181-r3 { fill: #22d3ee;font-weight: bold }
+.terminal-1816477181-r4 { fill: #4c5663 }
+.terminal-1816477181-r5 { fill: #64748b }
+.terminal-1816477181-r6 { fill: #34d399 }
+.terminal-1816477181-r7 { fill: #e2e8f0 }
+.terminal-1816477181-r8 { fill: #22d3ee }
+.terminal-1816477181-r9 { fill: #a78bfa }
+.terminal-1816477181-r10 { fill: #c4b5fd }
+.terminal-1816477181-r11 { fill: #c4b5fd;font-weight: bold }
+.terminal-1816477181-r12 { fill: #68a0b3;font-weight: bold }
+.terminal-1816477181-r13 { fill: #f8f8f2 }
+.terminal-1816477181-r14 { fill: #c5c8c6;font-weight: bold }
+.terminal-1816477181-r15 { fill: #68a0b3 }
+.terminal-1816477181-r16 { fill: #c5c8c6;font-style: italic; }
+.terminal-1816477181-r17 { fill: #34d399;font-weight: bold }
+.terminal-1816477181-r18 { fill: #64748b;font-weight: bold }
+    </style>
+
+    <defs>
+    <clipPath id="terminal-1816477181-clip-terminal">
+      <rect x="0" y="0" width="1170.1999999999998" height="975.0" />
+    </clipPath>
+    <clipPath id="terminal-1816477181-line-0">
+    <rect x="0" y="1.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-1">
+    <rect x="0" y="25.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-2">
+    <rect x="0" y="50.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-3">
+    <rect x="0" y="74.7" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-4">
+    <rect x="0" y="99.1" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-5">
+    <rect x="0" y="123.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-6">
+    <rect x="0" y="147.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-7">
+    <rect x="0" y="172.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-8">
+    <rect x="0" y="196.7" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-9">
+    <rect x="0" y="221.1" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-10">
+    <rect x="0" y="245.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-11">
+    <rect x="0" y="269.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-12">
+    <rect x="0" y="294.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-13">
+    <rect x="0" y="318.7" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-14">
+    <rect x="0" y="343.1" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-15">
+    <rect x="0" y="367.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-16">
+    <rect x="0" y="391.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-17">
+    <rect x="0" y="416.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-18">
+    <rect x="0" y="440.7" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-19">
+    <rect x="0" y="465.1" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-20">
+    <rect x="0" y="489.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-21">
+    <rect x="0" y="513.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-22">
+    <rect x="0" y="538.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-23">
+    <rect x="0" y="562.7" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-24">
+    <rect x="0" y="587.1" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-25">
+    <rect x="0" y="611.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-26">
+    <rect x="0" y="635.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-27">
+    <rect x="0" y="660.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-28">
+    <rect x="0" y="684.7" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-29">
+    <rect x="0" y="709.1" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-30">
+    <rect x="0" y="733.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-31">
+    <rect x="0" y="757.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-32">
+    <rect x="0" y="782.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-33">
+    <rect x="0" y="806.7" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-34">
+    <rect x="0" y="831.1" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-35">
+    <rect x="0" y="855.5" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-36">
+    <rect x="0" y="879.9" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-37">
+    <rect x="0" y="904.3" width="1171.2" height="24.65"/>
+            </clipPath>
+<clipPath id="terminal-1816477181-line-38">
+    <rect x="0" y="928.7" width="1171.2" height="24.65"/>
+            </clipPath>
+    </defs>
+
+    <rect fill="#292929" stroke="rgba(255,255,255,0.35)" stroke-width="1" x="1" y="1" width="1188" height="1024" rx="8"/><text class="terminal-1816477181-title" fill="#c5c8c6" text-anchor="middle" x="594" y="27">Astra&#160;Code&#160;—&#160;offline&#160;demo</text>
+            <g transform="translate(26,22)">
+            <circle cx="0" cy="0" r="7" fill="#ff5f57"/>
+            <circle cx="22" cy="0" r="7" fill="#febc2e"/>
+            <circle cx="44" cy="0" r="7" fill="#28c840"/>
+            </g>
+        
+    <g transform="translate(9, 41)" clip-path="url(#terminal-1816477181-clip-terminal)">
+    <rect fill="#4b4e55" x="207.4" y="587.1" width="97.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#272822" x="24.4" y="635.9" width="1146.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#272822" x="24.4" y="660.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#272822" x="36.6" y="660.3" width="170.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#272822" x="207.4" y="660.3" width="951.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#272822" x="1159" y="660.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#272822" x="24.4" y="684.7" width="1146.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#4b4e55" x="61" y="782.3" width="97.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#4b4e55" x="292.8" y="782.3" width="85.4" height="24.65" shape-rendering="crispEdges"/><rect fill="#4b4e55" x="353.8" y="806.7" width="134.2" height="24.65" shape-rendering="crispEdges"/>
+    <g class="terminal-1816477181-matrix">
+    <text class="terminal-1816477181-r1" x="1171.2" y="20" textLength="12.2" clip-path="url(#terminal-1816477181-line-0)">
+</text><text class="terminal-1816477181-r2" x="24.4" y="44.4" textLength="219.6" clip-path="url(#terminal-1816477181-line-1)">▄▀█&#160;█▀&#160;▀█▀&#160;█▀█&#160;▄▀█</text><text class="terminal-1816477181-r3" x="244" y="44.4" textLength="122" clip-path="url(#terminal-1816477181-line-1)">&#160;&#160;&#160;C&#160;O&#160;D&#160;E</text><text class="terminal-1816477181-r1" x="1171.2" y="44.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-1)">
+</text><text class="terminal-1816477181-r2" x="24.4" y="68.8" textLength="219.6" clip-path="url(#terminal-1816477181-line-2)">█▀█&#160;▄█&#160;&#160;█&#160;&#160;█▀▄&#160;█▀█</text><text class="terminal-1816477181-r4" x="244" y="68.8" textLength="85.4" clip-path="url(#terminal-1816477181-line-2)">&#160;&#160;&#160;v0.1</text><text class="terminal-1816477181-r1" x="1171.2" y="68.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-2)">
+</text><text class="terminal-1816477181-r5" x="24.4" y="93.2" textLength="634.4" clip-path="url(#terminal-1816477181-line-3)">бесплатный&#160;coding-агент&#160;·&#160;Claude&#160;Code&#160;/&#160;Codex&#160;skills</text><text class="terminal-1816477181-r1" x="1171.2" y="93.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-3)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="117.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-4)">
+</text><text class="terminal-1816477181-r6" x="0" y="142" textLength="1171.2" clip-path="url(#terminal-1816477181-line-5)">┌──────────────────────────────────────────────────────────────────────────────────────────────┐</text><text class="terminal-1816477181-r1" x="1171.2" y="142" textLength="12.2" clip-path="url(#terminal-1816477181-line-5)">
+</text><text class="terminal-1816477181-r6" x="0" y="166.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-6)">│</text><text class="terminal-1816477181-r6" x="24.4" y="166.4" textLength="158.6" clip-path="url(#terminal-1816477181-line-6)">✓&#160;офлайн-демо</text><text class="terminal-1816477181-r5" x="207.4" y="166.4" textLength="390.4" clip-path="url(#terminal-1816477181-line-6)">—&#160;реальные&#160;вызовы&#160;не&#160;выполняются</text><text class="terminal-1816477181-r6" x="1159" y="166.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-6)">│</text><text class="terminal-1816477181-r1" x="1171.2" y="166.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-6)">
+</text><text class="terminal-1816477181-r6" x="0" y="190.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-7)">│</text><text class="terminal-1816477181-r7" x="24.4" y="190.8" textLength="122" clip-path="url(#terminal-1816477181-line-7)">Astra&#160;Demo</text><text class="terminal-1816477181-r5" x="158.6" y="190.8" textLength="829.6" clip-path="url(#terminal-1816477181-line-7)">·&#160;mock-провайдер&#160;·&#160;показан&#160;полный&#160;цикл:&#160;todo&#160;→&#160;файл&#160;→&#160;запуск&#160;→&#160;ответ</text><text class="terminal-1816477181-r6" x="1159" y="190.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-7)">│</text><text class="terminal-1816477181-r1" x="1171.2" y="190.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-7)">
+</text><text class="terminal-1816477181-r6" x="0" y="215.2" textLength="1171.2" clip-path="url(#terminal-1816477181-line-8)">└──────────────────────────────────────────────────────────────────────────────────────────────┘</text><text class="terminal-1816477181-r1" x="1171.2" y="215.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-8)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="239.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-9)">
+</text><text class="terminal-1816477181-r5" x="0" y="264" textLength="1049.2" clip-path="url(#terminal-1816477181-line-10)">&#160;&#160;В&#160;демо-проекте:&#160;AGENTS.md&#160;·&#160;.claude/skills/check-output&#160;·&#160;.claude/commands/review.md</text><text class="terminal-1816477181-r1" x="1171.2" y="264" textLength="12.2" clip-path="url(#terminal-1816477181-line-10)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="288.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-11)">
+</text><text class="terminal-1816477181-r8" x="0" y="312.8" textLength="24.4" clip-path="url(#terminal-1816477181-line-12)">❯&#160;</text><text class="terminal-1816477181-r7" x="24.4" y="312.8" textLength="793" clip-path="url(#terminal-1816477181-line-12)">Создай&#160;hello.py&#160;с&#160;функцией&#160;greet()&#160;и&#160;проверь,&#160;что&#160;он&#160;запускается.</text><text class="terminal-1816477181-r1" x="1171.2" y="312.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-12)">
+</text><text class="terminal-1816477181-r9" x="0" y="337.2" textLength="24.4" clip-path="url(#terminal-1816477181-line-13)">◆&#160;</text><text class="terminal-1816477181-r2" x="24.4" y="337.2" textLength="61" clip-path="url(#terminal-1816477181-line-13)">Astra</text><text class="terminal-1816477181-r5" x="85.4" y="337.2" textLength="146.4" clip-path="url(#terminal-1816477181-line-13)">&#160;&#160;Astra&#160;Demo</text><text class="terminal-1816477181-r1" x="1171.2" y="337.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-13)">
+</text><text class="terminal-1816477181-r1" x="24.4" y="361.6" textLength="1146.8" clip-path="url(#terminal-1816477181-line-14)">Сначала&#160;соберу&#160;минимальный&#160;пример&#160;и&#160;проверю,&#160;что&#160;он&#160;запускается.&#160;Пишу&#160;файл&#160;и&#160;держу&#160;задачу&#160;в&#160;&#160;&#160;</text><text class="terminal-1816477181-r1" x="1171.2" y="361.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-14)">
+</text><text class="terminal-1816477181-r1" x="24.4" y="386" textLength="1146.8" clip-path="url(#terminal-1816477181-line-15)">todo.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1816477181-r1" x="1171.2" y="386" textLength="12.2" clip-path="url(#terminal-1816477181-line-15)">
+</text><text class="terminal-1816477181-r8" x="0" y="410.4" textLength="48.8" clip-path="url(#terminal-1816477181-line-16)">&#160;&#160;☑&#160;</text><text class="terminal-1816477181-r5" x="48.8" y="410.4" textLength="97.6" clip-path="url(#terminal-1816477181-line-16)">todo&#160;0/2</text><text class="terminal-1816477181-r7" x="146.4" y="410.4" textLength="231.8" clip-path="url(#terminal-1816477181-line-16)">&#160;·&#160;Создать&#160;hello.py</text><text class="terminal-1816477181-r1" x="1171.2" y="410.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-16)">
+</text><text class="terminal-1816477181-r10" x="0" y="434.8" textLength="48.8" clip-path="url(#terminal-1816477181-line-17)">&#160;&#160;⚙&#160;</text><text class="terminal-1816477181-r11" x="48.8" y="434.8" textLength="122" clip-path="url(#terminal-1816477181-line-17)">write_file</text><text class="terminal-1816477181-r5" x="170.8" y="434.8" textLength="122" clip-path="url(#terminal-1816477181-line-17)">&#160;&#160;hello.py</text><text class="terminal-1816477181-r6" x="292.8" y="434.8" textLength="48.8" clip-path="url(#terminal-1816477181-line-17)">&#160;&#160;✓&#160;</text><text class="terminal-1816477181-r5" x="341.6" y="434.8" textLength="829.6" clip-path="url(#terminal-1816477181-line-17)">записано&#160;6&#160;строк,&#160;120&#160;байт&#160;→&#160;~\AppData\Local\Temp\astra-demo-wqwgycc</text><text class="terminal-1816477181-r1" x="1171.2" y="434.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-17)">
+</text><text class="terminal-1816477181-r1" x="24.4" y="459.2" textLength="1146.8" clip-path="url(#terminal-1816477181-line-18)">Файл&#160;готов.&#160;Запускаю&#160;его.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1816477181-r1" x="1171.2" y="459.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-18)">
+</text><text class="terminal-1816477181-r11" x="0" y="483.6" textLength="183" clip-path="url(#terminal-1816477181-line-19)">&#160;&#160;▸&#160;py&#160;hello.py</text><text class="terminal-1816477181-r1" x="1171.2" y="483.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-19)">
+</text><text class="terminal-1816477181-r6" x="0" y="508" textLength="305" clip-path="url(#terminal-1816477181-line-20)">&#160;&#160;&#160;&#160;OK:&#160;exit_code=0,&#160;0.2s</text><text class="terminal-1816477181-r1" x="1171.2" y="508" textLength="12.2" clip-path="url(#terminal-1816477181-line-20)">
+</text><text class="terminal-1816477181-r5" x="73.2" y="532.4" textLength="158.6" clip-path="url(#terminal-1816477181-line-21)">$&#160;py&#160;hello.py</text><text class="terminal-1816477181-r1" x="1171.2" y="532.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-21)">
+</text><text class="terminal-1816477181-r5" x="73.2" y="556.8" textLength="170.8" clip-path="url(#terminal-1816477181-line-22)">---&#160;output&#160;---</text><text class="terminal-1816477181-r1" x="1171.2" y="556.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-22)">
+</text><text class="terminal-1816477181-r5" x="73.2" y="581.2" textLength="170.8" clip-path="url(#terminal-1816477181-line-23)">Привет,&#160;Astra!</text><text class="terminal-1816477181-r1" x="1171.2" y="581.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-23)">
+</text><text class="terminal-1816477181-r1" x="24.4" y="605.6" textLength="183" clip-path="url(#terminal-1816477181-line-24)">Готово.&#160;Создал&#160;</text><text class="terminal-1816477181-r12" x="207.4" y="605.6" textLength="97.6" clip-path="url(#terminal-1816477181-line-24)">hello.py</text><text class="terminal-1816477181-r1" x="305" y="605.6" textLength="866.2" clip-path="url(#terminal-1816477181-line-24)">,&#160;запустил&#160;его&#160;и&#160;получил&#160;вывод:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1816477181-r1" x="1171.2" y="605.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-24)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="630" textLength="12.2" clip-path="url(#terminal-1816477181-line-25)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="654.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-26)">
+</text><text class="terminal-1816477181-r13" x="36.6" y="678.8" textLength="170.8" clip-path="url(#terminal-1816477181-line-27)">Привет,&#160;Astra!</text><text class="terminal-1816477181-r1" x="1171.2" y="678.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-27)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="703.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-28)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="727.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-29)">
+</text><text class="terminal-1816477181-r14" x="24.4" y="752" textLength="134.2" clip-path="url(#terminal-1816477181-line-30)">Что&#160;сделано</text><text class="terminal-1816477181-r1" x="1171.2" y="752" textLength="12.2" clip-path="url(#terminal-1816477181-line-30)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="776.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-31)">
+</text><text class="terminal-1816477181-r15" x="24.4" y="800.8" textLength="36.6" clip-path="url(#terminal-1816477181-line-32)">&#160;1&#160;</text><text class="terminal-1816477181-r12" x="61" y="800.8" textLength="97.6" clip-path="url(#terminal-1816477181-line-32)">hello.py</text><text class="terminal-1816477181-r1" x="158.6" y="800.8" textLength="134.2" clip-path="url(#terminal-1816477181-line-32)">&#160;—&#160;функция&#160;</text><text class="terminal-1816477181-r12" x="292.8" y="800.8" textLength="85.4" clip-path="url(#terminal-1816477181-line-32)">greet()</text><text class="terminal-1816477181-r1" x="378.2" y="800.8" textLength="793" clip-path="url(#terminal-1816477181-line-32)">&#160;и&#160;точка&#160;входа.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1816477181-r1" x="1171.2" y="800.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-32)">
+</text><text class="terminal-1816477181-r15" x="24.4" y="825.2" textLength="36.6" clip-path="url(#terminal-1816477181-line-33)">&#160;2&#160;</text><text class="terminal-1816477181-r1" x="61" y="825.2" textLength="292.8" clip-path="url(#terminal-1816477181-line-33)">Проверка&#160;запуском&#160;через&#160;</text><text class="terminal-1816477181-r12" x="353.8" y="825.2" textLength="134.2" clip-path="url(#terminal-1816477181-line-33)">run_command</text><text class="terminal-1816477181-r1" x="488" y="825.2" textLength="683.2" clip-path="url(#terminal-1816477181-line-33)">.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1816477181-r1" x="1171.2" y="825.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-33)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="849.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-34)">
+</text><text class="terminal-1816477181-r1" x="24.4" y="874" textLength="292.8" clip-path="url(#terminal-1816477181-line-35)">Дальше&#160;можно&#160;попросить:&#160;</text><text class="terminal-1816477181-r16" x="317.2" y="874" textLength="475.8" clip-path="url(#terminal-1816477181-line-35)">«добавь&#160;тест&#160;на&#160;greet&#160;и&#160;прогони&#160;pytest»</text><text class="terminal-1816477181-r1" x="793" y="874" textLength="378.2" clip-path="url(#terminal-1816477181-line-35)">.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</text><text class="terminal-1816477181-r1" x="1171.2" y="874" textLength="12.2" clip-path="url(#terminal-1816477181-line-35)">
+</text><text class="terminal-1816477181-r17" x="0" y="898.4" textLength="122" clip-path="url(#terminal-1816477181-line-36)">&#160;&#160;✓&#160;готово</text><text class="terminal-1816477181-r18" x="122" y="898.4" textLength="109.8" clip-path="url(#terminal-1816477181-line-36)">&#160;·&#160;3&#160;шага</text><text class="terminal-1816477181-r18" x="231.8" y="898.4" textLength="195.2" clip-path="url(#terminal-1816477181-line-36)">&#160;·&#160;3&#160;инструмента</text><text class="terminal-1816477181-r18" x="427" y="898.4" textLength="256.2" clip-path="url(#terminal-1816477181-line-36)">&#160;·&#160;3.1k&#160;in&#160;/&#160;0.1k&#160;out</text><text class="terminal-1816477181-r18" x="683.2" y="898.4" textLength="146.4" clip-path="url(#terminal-1816477181-line-36)">&#160;·&#160;3.6s&#160;·&#160;$0</text><text class="terminal-1816477181-r1" x="1171.2" y="898.4" textLength="12.2" clip-path="url(#terminal-1816477181-line-36)">
+</text><text class="terminal-1816477181-r1" x="1171.2" y="922.8" textLength="12.2" clip-path="url(#terminal-1816477181-line-37)">
+</text><text class="terminal-1816477181-r6" x="0" y="947.2" textLength="341.6" clip-path="url(#terminal-1816477181-line-38)">&#160;&#160;✓&#160;демо&#160;завершено.&#160;Проект:&#160;</text><text class="terminal-1816477181-r7" x="341.6" y="947.2" textLength="488" clip-path="url(#terminal-1816477181-line-38)">~\AppData\Local\Temp\astra-demo-wqwgycc3</text><text class="terminal-1816477181-r1" x="1171.2" y="947.2" textLength="12.2" clip-path="url(#terminal-1816477181-line-38)">
+</text><text class="terminal-1816477181-r5" x="0" y="971.6" textLength="780.8" clip-path="url(#terminal-1816477181-line-39)">&#160;&#160;Дальше:&#160;astra&#160;auth&#160;set&#160;openrouter&#160;&#160;→&#160;&#160;astra&#160;&#160;→&#160;&#160;опишите&#160;задачу</text><text class="terminal-1816477181-r1" x="1171.2" y="971.6" textLength="12.2" clip-path="url(#terminal-1816477181-line-39)">
+</text>
+    </g>
+    </g>
+</svg>

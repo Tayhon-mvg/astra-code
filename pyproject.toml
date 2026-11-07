@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astra-code"
+version = "0.1.0"
+description = "Astra Code — a free, terminal-native coding agent with Claude Code / Codex skills and agents."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Astra Code contributors" }]
+keywords = ["ai", "coding-agent", "cli", "tui", "llm", "free"]
+dependencies = [
+    "rich>=13.7",
+    "httpx>=0.27",
+    "prompt_toolkit>=3.0.43",
+    "pygments>=2.17",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pillow>=10.0", "build>=1.2"]
+
+[project.scripts]
+astra = "astra.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["astra*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

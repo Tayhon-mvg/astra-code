@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Astra
+.astra/
+config.local.toml
+auth.toml
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+.sessions/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
