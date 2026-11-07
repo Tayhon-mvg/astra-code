@@ -6,7 +6,7 @@
 
 **Бесплатный терминальный coding-агент. Claude Code-подобный цикл, только на free-tier.**
 
-`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **71 тест**
+`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **71 тест** · [github.com/Tayhon-mvg/astra-code](https://github.com/Tayhon-mvg/astra-code)
 
 </div>
 
