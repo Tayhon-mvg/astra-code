@@ -35,7 +35,12 @@ if not exist ".venv\Scripts\python.exe" (
     echo [1/3] Virtual environment: OK
 )
 
-call .\install_deps.bat
+set "VENV=%CD%\.venv\Scripts\python.exe"
+
+echo [2/3] Installing dependencies...
+"%VENV%" -m pip install --upgrade pip --disable-pip-version-check --quiet
+if errorlevel 1 goto fail
+"%VENV%" -m pip install -e ".[dev]" --disable-pip-version-check --quiet
 if errorlevel 1 goto fail
 
 if /I "%MODE%"=="test" (
@@ -55,8 +60,10 @@ if /I "%MODE%"=="build" (
 )
 
 if /I "%MODE%"=="media-setup" (
-    call .\install_media.bat
+    echo [3/3] Installing media dependencies...
+    "%VENV%" -m pip install Pillow opencv-python --quiet
     if errorlevel 1 goto fail
+    echo Media tools ready: media_tools.py
     goto done
 )
 
