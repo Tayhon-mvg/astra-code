@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -145,7 +146,8 @@ def test_run_command(cfg: Config):
 
 def test_run_command_nonzero(cfg: Config):
     reg = registry(cfg)
-    command = f'& "{sys.executable}" -c "import sys; sys.exit(3)"'
+    prefix = "& " if os.name == "nt" else ""
+    command = f'{prefix}"{sys.executable}" -c "import sys; sys.exit(3)"'
     out = run(reg, "run_command", {"command": command})
     assert out.startswith("FAILED")
     assert "exit_code=3" in out
