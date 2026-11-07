@@ -11,6 +11,8 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import shutil
+import sys
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
@@ -624,7 +626,10 @@ class MockClient:
             await asyncio.sleep(0.2)
             content = "Файл готов. Запускаю его."
             await self._emit(content, on_delta)
-            command = "py hello.py" if os.name == "nt" else "python3 hello.py"
+            if os.name == "nt" and shutil.which("py"):
+                command = "py hello.py"
+            else:
+                command = f'"{sys.executable}" hello.py'
             return ChatResult(
                 content=content,
                 tool_calls=[

@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "pillow>=10.0", "build>=1.2"]
+dev = ["pytest>=8.0", "pillow>=10.0", "build>=1.2", "ruff>=0.6"]
 
 [project.scripts]
 astra = "astra.cli:main"
