@@ -68,7 +68,8 @@ class Handler(BaseHTTPRequestHandler):
         auth = self.headers.get("Authorization", "")
         Handler.auth_seen = auth
         if auth == "Bearer bad":
-            self._json(401, {"error": {"message": "invalid api key"}})
+            leaked = "sk-" + "or-" + "1234567890abcdefghij"
+            self._json(401, {"error": {"message": f"invalid api key {leaked}"}})
             return
         if payload.get("model") == "ratelimit":
             body = json.dumps({"error": {"message": "slow down"}}).encode()
@@ -204,13 +205,15 @@ def test_models_free_flag(server):
 
 
 def test_auth_error(server):
-    with pytest.raises(AuthError):
+    with pytest.raises(AuthError) as exc:
         asyncio.run(
             client(server, "bad").chat(
                 model="free/model",
                 messages=[{"role": "user", "content": "hi"}],
             )
         )
+    assert "1234567890abcdefghij" not in str(exc.value)
+    assert "sk-o***" in str(exc.value)
 
 
 def test_rate_limit(server):

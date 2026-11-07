@@ -17,6 +17,7 @@ from rich import box
 
 from . import catalog
 from .config import Config, mask
+from .tools import redact_secrets
 from .ui.theme import palette
 
 SETUP_ORDER = [
@@ -90,7 +91,7 @@ def validate(cfg: Config, provider_id: str, timeout: float = 18.0) -> tuple[bool
     if response.status_code in (401, 403):
         return False, "ключ не принят (401/403)", 0
     if response.status_code >= 400:
-        return False, f"HTTP {response.status_code}: {response.text[:160]}", 0
+        return False, redact_secrets(f"HTTP {response.status_code}: {response.text[:160]}"), 0
     try:
         data = response.json()
         rows = data.get("data") if isinstance(data, dict) else data

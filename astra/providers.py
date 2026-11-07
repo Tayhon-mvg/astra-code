@@ -11,6 +11,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import re
 import shutil
 import sys
 from dataclasses import dataclass, field
@@ -29,6 +30,16 @@ _TOOL_MARKERS = (
     "<tool_call",
     "<function_call",
 )
+
+_ERROR_SECRET_RE = re.compile(
+    r"(sk-[A-Za-z0-9_\-]{12,}|gsk_[A-Za-z0-9]{12,}|AIza[0-9A-Za-z_\-]{16,}|"
+    r"gh[pousr]_[A-Za-z0-9]{16,})"
+)
+
+
+def _redact_error(text: str) -> str:
+    """Provider 401 bodies sometimes echo the key; never surface it."""
+    return _ERROR_SECRET_RE.sub(lambda match: match.group(1)[:4] + "***", text)
 
 
 def strip_tool_markup(text: str) -> str:
@@ -238,7 +249,7 @@ class OpenAICompatClient:
                 message = str(data.get("message") or data.get("detail") or "")
         except (ValueError, AttributeError):
             message = body.decode("utf-8", "replace")[:400]
-        return (message or response.reason_phrase or "unknown error").strip(), retry_after
+        return (_redact_error(message or response.reason_phrase or "unknown error").strip(), retry_after)
 
     def _raise_for_response(self, response: httpx.Response, body: bytes) -> None:
         if response.status_code < 400:
@@ -435,7 +446,7 @@ class OpenAICompatClient:
                         error = event["error"]
                         message = error.get("message") if isinstance(error, dict) else str(error)
                         raise ProviderError(
-                            f"{self.provider.short}: {message or 'stream error'}",
+                            f"{self.provider.short}: {_redact_error(str(message or 'stream error'))}",
                             provider=self.provider.id,
                             retryable=True,
                         )
