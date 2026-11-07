@@ -211,6 +211,11 @@ def _command_targets_system_root(command: str, cwd: Path) -> bool:
         return False
     if _SYSTEM_ENV_RE.search(command):
         return True
+    # Running the current interpreter is legitimate even when Python lives under
+    # /opt or /usr; only paths in its arguments should trigger the root guard.
+    python_exe = str(Path(sys.executable))
+    if python_exe:
+        command = command.replace(python_exe, "<python>")
     if os.name == "nt":
         # A Windows agent can still reach Linux roots through WSL/bash.
         for token in _UNIX_SYSTEM_TOKENS:
