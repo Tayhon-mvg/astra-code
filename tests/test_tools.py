@@ -246,6 +246,51 @@ def test_fetch_url_blocks_localhost(cfg: Config):
     assert "приватные" in out or "локальные" in out
 
 
+def test_system_roots_are_blocked(cfg: Config):
+    system_path = "C:\\Windows" if os.name == "nt" else "/etc"
+    cfg.data["allow_outside"] = True
+    cfg.data["approval"] = "auto"
+    reg = registry(cfg)
+
+    for tool, args in (
+        ("read_file", {"path": system_path}),
+        ("write_file", {"path": system_path + "\\astra-test.txt" if os.name == "nt" else "/etc/astra-test.txt", "content": "x"}),
+        ("list_dir", {"path": system_path}),
+        ("glob", {"pattern": "*.txt", "path": system_path}),
+        ("grep", {"pattern": "x", "path": system_path}),
+    ):
+        out = run(reg, tool, args)
+        assert out.startswith("ERROR"), (tool, out)
+        assert "системная" in out, (tool, out)
+
+
+def test_system_root_command_blocked(cfg: Config):
+    system_path = "C:\\Windows" if os.name == "nt" else "/etc"
+    reg = registry(cfg)
+    out = run(reg, "run_command", {"command": f"echo {system_path}"})
+    assert out.startswith("ERROR")
+    assert "системная" in out
+
+
+def test_system_env_wsl_and_drive_root_blocked(cfg: Config):
+    reg = registry(cfg)
+    for command in ("echo %SystemRoot%", "echo $env:SystemRoot", "wsl cat /etc/passwd"):
+        out = run(reg, "run_command", {"command": command})
+        assert out.startswith("ERROR"), (command, out)
+        assert "системная" in out
+    out = run(reg, "run_command", {"command": "dir C:\\" if os.name == "nt" else "ls /"})
+    assert out.startswith("ERROR")
+
+
+def test_extended_windows_system_path_blocked(cfg: Config):
+    if os.name != "nt":
+        return
+    reg = registry(cfg)
+    out = run(reg, "read_file", {"path": "\\\\?\\C:\\Windows\\win.ini"})
+    assert out.startswith("ERROR")
+    assert "системная" in out or "device" in out
+
+
 def test_safe_env_strips_secrets(monkeypatch):
     monkeypatch.setenv("OPENROUTER_API_KEY", "dummy-value")
     monkeypatch.setenv("GH_TOKEN", "dummy-value")

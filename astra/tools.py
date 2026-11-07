@@ -44,6 +44,71 @@ SENSITIVE_NAMES = {
     "storage.sqlite", "storage.sqlite-wal", "storage.sqlite-shm",
 }
 SENSITIVE_SUFFIXES = {".pem", ".key", ".pfx", ".p12"}
+
+
+def _system_roots() -> tuple[Path, ...]:
+    if os.name == "nt":
+        drive = os.environ.get("SystemDrive", "C:").rstrip("\\/") + "\\"
+        roots = [
+            Path(drive),
+            Path(drive + "Windows"),
+            Path(drive + "Program Files"),
+            Path(drive + "Program Files (x86)"),
+            Path(drive + "ProgramData"),
+            Path(drive + "Recovery"),
+            Path(drive + "Boot"),
+            Path(drive + "EFI"),
+            Path(drive + "PerfLogs"),
+            Path(drive + "Config.Msi"),
+            Path(drive + "MSOCache"),
+            Path(drive + "System Volume Information"),
+            Path(drive + "$Recycle.Bin"),
+            Path(drive + "Windows.old"),
+            Path(drive + "pagefile.sys"),
+            Path(drive + "hiberfil.sys"),
+            Path(drive + "swapfile.sys"),
+        ]
+        # Other drive letters: block listing their root, but not their user folders.
+        for letter in "DEFGHIJKLMNOPQRSTUVWXYZ":
+            roots.append(Path(f"{letter}:\\"))
+        return tuple(roots)
+    roots = [
+        Path("/"),
+        Path("/etc"),
+        Path("/usr"),
+        Path("/bin"),
+        Path("/sbin"),
+        Path("/lib"),
+        Path("/lib64"),
+        Path("/boot"),
+        Path("/dev"),
+        Path("/proc"),
+        Path("/sys"),
+        Path("/root"),
+        Path("/var"),
+        Path("/opt"),
+        Path("/run"),
+        Path("/srv"),
+        Path("/snap"),
+        Path("/System"),
+        Path("/Library"),
+        Path("/Applications"),
+        Path("/private"),
+        Path("/Volumes"),
+    ]
+    return tuple(roots)
+
+
+SYSTEM_ROOTS = _system_roots()
+
+_SYSTEM_ENV_RE = re.compile(
+    r"(?i)(?:\$env:(?:systemroot|windir|programfiles(?:\(x86\))?|programdata)"
+    r"|%(?:systemroot|windir|programfiles(?:\(x86\))?|programdata)%)"
+)
+_UNIX_SYSTEM_TOKENS = (
+    "/etc", "/usr", "/bin", "/sbin", "/boot", "/dev", "/proc", "/sys",
+    "/root", "/var", "/opt", "/run", "/srv", "/snap",
+)
 _DANGEROUS_COMMAND_RE = re.compile(
     r"(?is)(?:"
     r"\brm\s+-[a-z]*r[a-z]*f[a-z]*\s+(?:/|~|\$HOME|[a-z]:\\)"
@@ -115,6 +180,92 @@ def _is_sensitive(path: Path) -> bool:
 
 def _command_is_dangerous(command: str) -> bool:
     return bool(_DANGEROUS_COMMAND_RE.search(command))
+
+
+def _is_system_path(path: Path, cwd: Path) -> bool:
+    """Hard block for OS roots; cannot be overridden by approval/allow_outside."""
+    for root in SYSTEM_ROOTS:
+        try:
+            if path == root:
+                return True
+            # A filesystem root ("/" or "C:\\") is blocked only as an exact path,
+            # otherwise every project on the drive would be blocked.
+            if root.parent == root:
+                continue
+            if path.is_relative_to(root):
+                if cwd.is_relative_to(root) and path.is_relative_to(cwd):
+                    continue
+                return True
+        except (OSError, ValueError):
+            continue
+    return False
+
+
+def _command_targets_system_root(command: str, cwd: Path) -> bool:
+    """Catch shell commands that explicitly address an OS root.
+
+    The cwd prefix is removed first, so a project that lives below /usr or
+    C:\\Windows can still run commands with its own absolute paths.
+    """
+    if not command:
+        return False
+    if _SYSTEM_ENV_RE.search(command):
+        return True
+    if os.name == "nt":
+        # A Windows agent can still reach Linux roots through WSL/bash.
+        for token in _UNIX_SYSTEM_TOKENS:
+            if re.search(rf"(?:^|[\s\"']){re.escape(token)}(?=[/\s\"'*?]|$)", command):
+                return True
+        text = command.lower().replace("/", "\\")
+        cwd_text = str(cwd).lower().replace("/", "\\").rstrip("\\")
+        if cwd_text:
+            text = text.replace(cwd_text, "<cwd>")
+        for root in SYSTEM_ROOTS:
+            if root.parent == root:
+                continue
+            token = str(root).lower().replace("/", "\\").rstrip("\\")
+            if not token:
+                continue
+            start = 0
+            while True:
+                index = text.find(token, start)
+                if index == -1:
+                    break
+                before = text[index - 1] if index else ""
+                after = text[index + len(token):index + len(token) + 1]
+                if before in {"", " ", "\t", '"', "'", "(", "<", ">", "|", "&", ";"} and (
+                    after in {"", " ", "\t", '"', "'", ")", ";", ",", "|", "&", ">", "\\", "*", "?"}
+                ):
+                    return True
+                start = index + 1
+        # "dir C:\" / "del D:\*": a bare drive root, not every path below it.
+        if re.search(r"(?i)(?:^|[\s\"'])[a-z]:\\?(?=[\s\"'*?]|$)", text):
+            return True
+        return False
+
+    text = command
+    cwd_text = str(cwd)
+    if cwd_text:
+        text = text.replace(cwd_text, "<cwd>")
+    for root in SYSTEM_ROOTS:
+        if root.parent == root:
+            continue
+        token = str(root)
+        start = 0
+        while True:
+            index = text.find(token, start)
+            if index == -1:
+                break
+            before = text[index - 1] if index else ""
+            after = text[index + len(token):index + len(token) + 1]
+            if before in {"", " ", "\t", '"', "'", "(", "<", ">", "|", "&", ";"} and (
+                after in {"", " ", "\t", '"', "'", ")", ";", ",", "|", "&", ">", "/", "*", "?"}
+            ):
+                return True
+            start = index + 1
+    if re.search(r"(?:^|[\s\"'])//?(?=[\s\"'*?]|$)", text):
+        return True
+    return False
 
 ApprovalCallback = Callable[[str, str, str], Awaitable[str]]
 
@@ -442,7 +593,13 @@ class ToolRegistry:
     async def _path(self, raw: str, *, write: bool = False, must_exist: bool = False) -> Path:
         if not raw or not str(raw).strip():
             raise ToolError("пустой путь")
-        path = Path(str(raw)).expanduser()
+        raw_text = str(raw)
+        if os.name == "nt":
+            if raw_text.startswith(("\\\\.\\", "\\\\?\\GLOBALROOT")):
+                raise ToolError("device/extended системные пути заблокированы")
+            if raw_text.startswith("\\\\?\\"):
+                raw_text = raw_text[4:]
+        path = Path(raw_text).expanduser()
         if not path.is_absolute():
             path = self.ctx.cwd / path
         path = path.resolve()
@@ -450,6 +607,12 @@ class ToolRegistry:
             raise ToolError("auth.toml защищён: ключи не читаются агентом")
         if path == (Path.home() / ".omniroute" / "storage.sqlite").resolve():
             raise ToolError("база OmniRoute защищена: токены и OAuth-секреты не читаются агентом")
+        if _is_system_path(path, self.ctx.cwd):
+            raise ToolError(
+                f"системная папка заблокирована: {shorten_path(path, 70)}. "
+                "Astra не читает и не изменяет Windows/Program Files/ProgramData, "
+                "/etc, /usr, /bin, /boot, /dev, /proc, /sys и другие системные корни."
+            )
         if must_exist and not path.exists():
             raise ToolError(f"файл не найден: {shorten_path(path)}")
         if path.is_dir() and write:
@@ -714,6 +877,11 @@ class ToolRegistry:
         command = str(args.get("command") or "").strip()
         if not command:
             raise ToolError("пустая команда")
+        if _command_targets_system_root(command, self.ctx.cwd):
+            raise ToolError(
+                "системная папка заблокирована: команда обращается к Windows/Program Files/"
+                "ProgramData, /etc, /usr, /bin, /boot, /dev, /proc, /sys или корню диска."
+            )
         timeout = min(600, max(5, int(args.get("timeout") or 120)))
         policy = str(self.ctx.cfg.get("approval", "ask"))
         if policy == "readonly":

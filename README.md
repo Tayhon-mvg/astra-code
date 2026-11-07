@@ -6,7 +6,7 @@
 
 **Бесплатный терминальный coding-агент. Claude Code-подобный цикл, только на free-tier.**
 
-`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **82 теста** · [github.com/Tayhon-mvg/astra-code](https://github.com/Tayhon-mvg/astra-code)
+`Python 3.11+` · `Windows / macOS / Linux` · `MIT` · **86 тестов** · [github.com/Tayhon-mvg/astra-code](https://github.com/Tayhon-mvg/astra-code)
 
 </div>
 
@@ -298,6 +298,12 @@ astra "перечисли доступные скиллы и загрузи ре
 - **Workspace sandbox.** Пути резолвятся и проверяются; выход за папку проекта требует
   отдельного подтверждения. `~/.astra/auth.toml` и база `~/.omniroute/storage.sqlite`
   агенту недоступны.
+- **Системные корни заблокированы навсегда.** `C:\`, `C:\Windows`, `C:\Program Files*`,
+  `C:\ProgramData`, `C:\Recovery`, `C:\Boot`, `$Recycle.Bin`, `pagefile.sys`, а на Unix —
+  `/`, `/etc`, `/usr`, `/bin`, `/sbin`, `/lib*`, `/boot`, `/dev`, `/proc`, `/sys`, `/root`,
+  `/var`, `/opt`, `/System`, `/Library`. Это не обходится `--yes`, `approval=auto` или
+  `allow_outside`. Shell-гард дополнительно блокирует `%SystemRoot%`, `$env:SystemRoot`,
+  `wsl ... /etc/...`, `\\?\C:\Windows`, `dir C:\` и явные пути в системные корни.
 - **Approval modes.** `ask` (по умолчанию), `auto` (`--yes`), `readonly` (`--read-only`).
   `approval` управляет правками файлов; shell-команды по умолчанию идут **без постоянных
   запросов** (`auto_commands = true`). Опасные команды (`rm -rf /`, `Remove-Item -Recurse C:\`,
@@ -411,14 +417,14 @@ astra/
 ├── docs/demo.png|svg    скриншот демо
 ├── scripts/make_demo.py генератор скриншота
 ├── start.bat            venv + deps + run/build/demo/doctor; tests on demand
-└── tests/               82 теста
+└── tests/               86 тестов
 ```
 
 ## Тесты
 
 ```bash
 .venv\Scripts\python.exe -m pytest -q
-# 82 passed
+# 86 passed
 
 # или на Windows:
 start.bat test

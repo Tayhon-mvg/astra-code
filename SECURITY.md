@@ -33,6 +33,14 @@ The agent is **not** a security boundary:
   instructions. Treat snippets as leads, not facts.
 - `.env`, `auth.toml`, private keys and credential files require an extra confirmation;
   their output is redacted.
+- OS roots are hard-blocked for file tools even with `--yes`, `approval=auto` or
+  `allow_outside`: `C:\`, `C:\Windows`, `C:\Program Files*`, `C:\ProgramData`, drive roots,
+  `/`, `/etc`, `/usr`, `/bin`, `/sbin`, `/lib*`, `/boot`, `/dev`, `/proc`, `/sys`, `/root`,
+  `/var`, `/opt`, `/System`, `/Library`, and extended/device paths (`\\?\`, `\\.\`).
+- Shell commands that name those roots, `%SystemRoot%`/`$env:SystemRoot`, a bare drive root,
+  or WSL paths such as `/etc/...` are rejected. This is a guard, not an OS sandbox: a
+  determined model can still bypass string checks through subprocesses or tools. Use
+  `--read-only` or OS-level isolation when that boundary matters.
 - `~/.astra/auth.toml` and `~/.omniroute/storage.sqlite` are blocked from the file
   tools. They are still ordinary user files on disk; rely on OS permissions.
 - `fetch_url` blocks loopback/private/link-local addresses and validates redirects,
