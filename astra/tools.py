@@ -13,6 +13,7 @@ import re
 import shutil
 import socket
 import subprocess
+import sys
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
