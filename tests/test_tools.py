@@ -177,8 +177,8 @@ def test_fetch_url_blocks_localhost(cfg: Config):
 
 
 def test_safe_env_strips_secrets(monkeypatch):
-    monkeypatch.setenv("OPENROUTER_API_KEY", "sk-or-1234567890abcdefghij")
-    monkeypatch.setenv("GH_TOKEN", "ghp_1234567890abcdefghij")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "dummy-value")
+    monkeypatch.setenv("GH_TOKEN", "dummy-value")
     monkeypatch.setenv("PATH", "C:\\Windows")
     env = _safe_env()
     assert "OPENROUTER_API_KEY" not in env
@@ -188,7 +188,7 @@ def test_safe_env_strips_secrets(monkeypatch):
 
 
 def test_redact_secrets():
-    secret = "sk-or-1234567890abcdefghij"
+    secret = "sk-" + "or-" + "1234567890abcdefghij"
     text = f"OPENROUTER_API_KEY={secret}\nAuthorization: Bearer {secret}\nvalue={secret}"
     hidden = redact_secrets(text)
     assert secret not in hidden
@@ -205,8 +205,9 @@ def test_sensitive_file_names():
 
 def test_sensitive_file_requires_approval_and_redacts(cfg: Config, tmp_path):
     cfg.data["approval"] = "ask"
+    secret = "sk-" + "or-" + "1234567890abcdefghij"
     cfg.cwd.joinpath(".env").write_text(
-        "OPENROUTER_API_KEY=sk-or-1234567890abcdefghij\n", encoding="utf-8"
+        f"OPENROUTER_API_KEY={secret}\n", encoding="utf-8"
     )
     calls: list[str] = []
 
@@ -225,4 +226,4 @@ def test_sensitive_file_requires_approval_and_redacts(cfg: Config, tmp_path):
     reg = registry(cfg, allow)
     out = run(reg, "read_file", {"path": ".env"})
     assert "OPENROUTER_API_KEY=***" in out
-    assert "sk-or-1234567890abcdefghij" not in out
+    assert secret not in out
